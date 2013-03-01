@@ -1,6 +1,12 @@
 class Maze
   def initialize(data)
-    @data = data.split(/\n/).map { |line| line.split(//).map { |cell| Cell.new(cell) } }
+    @workers = Array.new
+    @data = data.split(/\n/).each_with_index do |line, i|
+      line.split(//).each_with_index do |cell, j| 
+        cell = Cell.new(cell)
+        @workers.push Worker.new(i,j) if cell.entrance? 
+      end
+    end
     @data
   end
 
@@ -8,25 +14,13 @@ class Maze
     @data.map { |line| line.map { |cell| cell.inspect }.join }.join("\n")
   end
 
-  def worker
-    workers = []
-    @data.each do |line|
-      line.each do |cell|
-        cell.work?
-  end
-
   def run
-    @data.
+    @workers.each{ |worker| worker.dig }
   end
 
   class Cell
     def initialize(cell)
       @cell = cell
-      if entrance?
-        @work = Worker.new
-      elsif exit?
-        @work = Worker.new
-      end
     end
 
     def inspect
@@ -39,6 +33,14 @@ class Maze
   end
 
   class Worker
+    def initialize(i,j)
+      @i = i
+      @j = j
+    end
+    
+    def dig
+      
+    end
   end
 end
 
